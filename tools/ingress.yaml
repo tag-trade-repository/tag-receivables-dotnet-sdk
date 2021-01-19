@@ -1,0 +1,18 @@
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: "#{Application.Ingress.Name}#"
+  namespace: "#{Application.Namespace}#"
+  labels:
+    name: "#{Application.Name}#"
+    squad: "#{Application.Squad}#"  
+    tribe: "#{Application.Tribe}#"
+  annotations:
+    ingress.gcp.kubernetes.io/pre-shared-cert: "#{Application.Ingress.Tls.Certificate}#"
+    kubernetes.io/ingress.allow-http: "#{Application.Ingress.Allow.Http}#"
+    kubernetes.io/ingress.class: "gce-internal"
+spec:
+  backend:
+    serviceName: "#{Application.Service.Name}#"
+    servicePort: #{Application.Service.PortMapping.SourcePort}#

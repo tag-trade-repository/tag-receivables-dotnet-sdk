@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "#{Application.Name}#"
+  namespace: "#{Application.Namespace}#"
+  labels:
+    app: "#{Application.Name}#"
+    service: "#{Application.Service.Name}#"
+    squad: "#{Application.Squad}#"
+    tribe: "#{Application.Tribe}#"
+    version: "#{Tag.Application.Release.Version}#"  
+spec:
+  selector:
+    matchLabels:
+      app: "#{Application.Name}#"
+  replicas: #{K8s.Deployment.Spec.Replicas}#
+  template:
+    metadata:
+      labels:
+        app: "#{Application.Name}#"
+    spec:
+      serviceAccountName: "#{Application.KubernetesServiceAccount}#"
+      containers:
+        - name: "#{Application.Name}#"
+          image: "#{Application.Image}#"
+          env:
+            - name: DD_AGENT_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - configMapRef:
+                name: "#{Application.Name}#"
+            - secretRef:
+                name: "#{Application.Name}#"
+          livenessProbe:
+            httpGet:
+              path: "#{K8s.Deployment.LivenessProbe.Path}#"
+              port: #{K8s.Deployment.LivenessProbe.Port}#
+            initialDelaySeconds: #{K8s.Deployment.LivenessProbe.InitialDelaySeconds}#
+            periodSeconds: #{K8s.Deployment.LivenessProble.PeriodSeconds}#
+          readinessProbe:
+            httpGet: 
+              path: "#{K8s.Deployment.ReadinessProbe.Path}#" 
+              port: #{K8s.Deployment.ReadinessProbe.Port}#
+            initialDelaySeconds: #{K8s.Deployment.ReadinessProbe.InitialDelaySeconds}#
+            periodSeconds: #{K8s.Deployment.ReadinessProbe.PeriodSeconds}#
+          imagePullPolicy: "#{K8s.Deployment.ImagePullPolicy}#"
+          ports:
+            - containerPort: #{K8s.Deployment.Ports.ContainerPort}#
+          resources:
+            limits:
+              cpu: "#{K8s.Deployment.Resources.Limits.Cpu}#"
+              memory: "#{K8s.Deployment.Resources.Limits.Memory}#"
+            requests:
+              cpu: "#{K8s.Deployment.Resources.Requests.Cpu}#"
+              memory: "#{K8s.Deployment.Resources.Requests.Memory}#"
+  strategy:
+    type: "#{K8s.Deployment.Strategy.Type}#"
+    rollingUpdate:
+      maxSurge: #{K8s.Deployment.Strategy.RollingUpdate.MaxSurge}#
+      maxUnavailable: #{K8s.Deployment.Strategy.RollingUpdate.MaxUnavailable}#
+  minReadySeconds: #{K8s.Deployment.MinReadySeconds}#

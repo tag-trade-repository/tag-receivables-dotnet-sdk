@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "#{Application.Name}#"
+  namespace: "#{Application.Namespace}#"
+  labels:
+    name: "#{Application.Name}#"
+    tribe: "#{Application.Tribe}#"
+    squad: "#{Application.Squad}#"  
+data:

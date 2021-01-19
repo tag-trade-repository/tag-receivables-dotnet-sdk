@@ -1,0 +1,13 @@
+---
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: "#{Application.BackendConfig.Name}#"
+  namespace: "#{Application.Namespace}#"
+  labels:
+    name: "#{Application.Name}#"
+    tribe: "#{Application.Tribe}#"
+    squad: "#{Application.Squad}#"  
+spec:
+  securityPolicy:
+    name: "#{Application.SecurityPolicy.Name}#"

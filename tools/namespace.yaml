@@ -1,0 +1,7 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: "#{Application.Namespace}#"
+  labels:
+    tribe: "#{Application.Tribe}#"
+    squad: "#{Application.Squad}#"  

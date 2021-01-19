@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "#{Application.Service.Name}#"
+  namespace: "#{Application.Namespace}#"
+  labels:
+    name: "#{Application.Name}#"
+    squad: "#{Application.Squad}#"
+    tribe: "#{Application.Tribe}#"
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'  
+spec:
+  type: #{Application.Service.Type}#
+  ports:
+  - port: #{Application.Service.PortMapping.SourcePort}#
+    targetPort: #{Application.Service.PortMapping.TargetPort}#
+    protocol: #{Application.Service.PortMapping.Protocol}#
+  selector:
+    app: "#{Application.Name}#"
